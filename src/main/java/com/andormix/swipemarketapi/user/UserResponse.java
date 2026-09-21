@@ -1,4 +1,4 @@
-package com.andormix.swipemarketapi.auth;
+package com.andormix.swipemarketapi.user;
 
 public record UserResponse(
         Long id,
