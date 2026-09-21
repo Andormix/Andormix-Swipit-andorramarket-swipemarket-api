@@ -16,7 +16,8 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.security.authentication.BadCredentialsException;
 
 @Service
-public class AuthService {
+public class AuthService
+{
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -35,14 +36,13 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
-    public AuthResponse register(RegisterRequest request) {
+    public AuthResponse register(RegisterRequest request)
+    {
         String normalizedEmail = normalizeEmail(request.email());
 
-        if (userRepository.existsByEmailIgnoreCase(normalizedEmail)) {
-            throw new ResponseStatusException(
-                    HttpStatus.CONFLICT,
-                    "Email is already registered"
-            );
+        if (userRepository.existsByEmailIgnoreCase(normalizedEmail))
+        {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Email is already registered");
         }
 
         User user = new User(
