@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.security.authentication.BadCredentialsException;
 
 @Service
 public class AuthService {
@@ -60,18 +61,29 @@ public class AuthService {
     public AuthResponse login(LoginRequest request) {
         String normalizedEmail = normalizeEmail(request.email());
 
-        Authentication authentication =
-                authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(
-                                normalizedEmail,
-                                request.password()
-                        )
-                );
+        Authentication authentication;
+
+        try {
+            authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            normalizedEmail,
+                            request.password()
+                    )
+            );
+        } catch (BadCredentialsException exception) {
+            throw new ResponseStatusException(
+                    HttpStatus.UNAUTHORIZED,
+                    "Invalid email or password"
+            );
+        }
 
         UserDetails principal = (UserDetails) authentication.getPrincipal();
 
         User user = userRepository.findByEmailIgnoreCase(normalizedEmail)
-                .orElseThrow();
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.UNAUTHORIZED,
+                        "Invalid email or password"
+                ));
 
         return createAuthResponse(user, principal);
     }
