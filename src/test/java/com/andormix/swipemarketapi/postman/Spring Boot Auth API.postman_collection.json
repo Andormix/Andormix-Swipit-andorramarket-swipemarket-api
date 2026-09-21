@@ -1,0 +1,422 @@
+{
+  "info": {
+    "_postman_id": "b497a3c5-a90f-49c0-898c-e68ce2acb02f",
+    "name": "Spring Boot Auth API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "45216650",
+    "_collection_link": "https://go.postman.co/collection/45216650-b497a3c5-a90f-49c0-898c-e68ce2acb02f?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Registrar usuario",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"demo3@example.com\",\r\n  \"password\": \"password123\",\r\n  \"displayName\": \"Demo User3\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/auth/register",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "auth",
+            "register"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Result",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"demo3@example.com\",\r\n  \"password\": \"password123\",\r\n  \"displayName\": \"Demo User3\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/auth/register",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "x-content-type-options",
+              "value": "nosniff"
+            },
+            {
+              "key": "x-xss-protection",
+              "value": "0"
+            },
+            {
+              "key": "cache-control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "expires",
+              "value": "0"
+            },
+            {
+              "key": "x-frame-options",
+              "value": "DENY"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json"
+            },
+            {
+              "key": "transfer-encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "date",
+              "value": "Mon, 21 Sep 2026 19:57:45 GMT"
+            },
+            {
+              "key": "keep-alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"token\": \"eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJkZW1vM0BleGFtcGxlLmNvbSIsImlhdCI6MTc5MDAyMDY2NSwiZXhwIjoxNzkwMDI0MjY1LCJyb2xlcyI6WyJST0xFX1VTRVIiXX0.UaismjR7Fcn55bM7dsYAXKkRxVR0wGtE784Pz6vesBs33zoP8quQCPm82ONer1QD\",\n  \"tokenType\": \"Bearer\",\n  \"userId\": 3,\n  \"email\": \"demo3@example.com\",\n  \"displayName\": \"Demo User3\",\n  \"role\": \"USER\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Consultar usuario actual",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": [
+        {
+          "name": "Result",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/users/me",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "me"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "x-content-type-options",
+              "value": "nosniff"
+            },
+            {
+              "key": "x-xss-protection",
+              "value": "0"
+            },
+            {
+              "key": "cache-control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "expires",
+              "value": "0"
+            },
+            {
+              "key": "x-frame-options",
+              "value": "DENY"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json"
+            },
+            {
+              "key": "content-length",
+              "value": "77"
+            },
+            {
+              "key": "date",
+              "value": "Mon, 21 Sep 2026 19:59:34 GMT"
+            },
+            {
+              "key": "keep-alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"id\": 3,\n  \"email\": \"demo3@example.com\",\n  \"displayName\": \"Demo User3\",\n  \"role\": \"USER\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Consultar sin token",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/users/me",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "users",
+            "me"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Result",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/users/me",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "me"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "text",
+          "header": [
+            {
+              "key": "x-content-type-options",
+              "value": "nosniff"
+            },
+            {
+              "key": "x-xss-protection",
+              "value": "0"
+            },
+            {
+              "key": "cache-control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "expires",
+              "value": "0"
+            },
+            {
+              "key": "x-frame-options",
+              "value": "DENY"
+            },
+            {
+              "key": "content-length",
+              "value": "0"
+            },
+            {
+              "key": "date",
+              "value": "Mon, 21 Sep 2026 20:01:41 GMT"
+            },
+            {
+              "key": "keep-alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": ""
+        }
+      ]
+    },
+    {
+      "name": "Probar login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"demo@example.com\",\r\n  \"password\": \"password123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/auth/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Result",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"demo@example.com\",\r\n  \"password\": \"password123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "x-content-type-options",
+              "value": "nosniff"
+            },
+            {
+              "key": "x-xss-protection",
+              "value": "0"
+            },
+            {
+              "key": "cache-control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "expires",
+              "value": "0"
+            },
+            {
+              "key": "x-frame-options",
+              "value": "DENY"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json"
+            },
+            {
+              "key": "transfer-encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "date",
+              "value": "Mon, 21 Sep 2026 20:03:10 GMT"
+            },
+            {
+              "key": "keep-alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"token\": \"eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJkZW1vQGV4YW1wbGUuY29tIiwiaWF0IjoxNzkwMDIwOTkwLCJleHAiOjE3OTAwMjQ1OTAsInJvbGVzIjpbIlJPTEVfVVNFUiJdfQ.9R33FY7T5amyH91nsB4GgjyBSuiBJlGvXuMikiipl7n7lRAKQ0w_Faj6xruX-xQY\",\n  \"tokenType\": \"Bearer\",\n  \"userId\": 1,\n  \"email\": \"demo@example.com\",\n  \"displayName\": \"Demo User\",\n  \"role\": \"USER\"\n}"
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "json_web_token_03c7",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_0akl",
+      "secret": true
+    }
+  ]
+}
