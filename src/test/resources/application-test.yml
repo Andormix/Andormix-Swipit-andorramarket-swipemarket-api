@@ -14,7 +14,7 @@ spring:
     enabled: true
     locations: classpath:db/migration
 
-  # Configuración después de añadir dependencias en pom - I2
-  jwt:
-    secret: VGhpc0lzQURldm9uc3RyYXRpb25TZWNyZXRLRXlGb3JTd2lwZU1hcmtldEFwcDEyMzQ1Njc4OTA=
-    expiration-minutes: 60
+# Configuración después de añadir dependencias en pom - I2
+jwt:
+  secret: VGhpc0lzQURldm9uc3RyYXRpb25TZWNyZXRLRXlGb3JTd2lwZU1hcmtldEFwcDEyMzQ1Njc4OTA=
+  expiration-minutes: 60
