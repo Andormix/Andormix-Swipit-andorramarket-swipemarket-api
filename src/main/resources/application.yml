@@ -37,3 +37,9 @@ logging:
   level:
     org.flywaydb: INFO
     org.springframework.web: INFO
+
+# Configuración después de añadir dependencias en pom - I2
+# Nota: Var local por sustituir en env vars.
+jwt:
+  secret: ${JWT_SECRET:VGhpc0lzQURldm9uc3RyYXRpb25TZWNyZXRLRXlGb3JTd2lwZU1hcmtldEFwcDEyMzQ1Njc4OTA=}
+  expiration-minutes: ${JWT_EXPIRATION_MINUTES:60}
