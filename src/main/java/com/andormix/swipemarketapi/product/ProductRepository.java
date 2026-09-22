@@ -11,3 +11,9 @@ public interface ProductRepository extends JpaRepository<Product, Long>,  JpaSpe
     //Page<Product> findByStatus(ProductStatus status, Pageable pageable);
 }
 
+/*  JpaSpecificationExecutor<Product> el spec será ProductSpecifications
+
+    findAll(Specification<T> spec, Pageable pageable)
+    findOne(Specification<T> spec)
+    count(Specification<T> spec)
+* */

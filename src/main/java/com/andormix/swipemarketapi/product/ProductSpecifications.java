@@ -11,12 +11,15 @@ import java.util.List;
 
 public class ProductSpecifications implements Specification<Product> {
 
+    // Contrato 1
     private final ProductSearchCriteria criteria;
 
+    // Contrato 2
     public ProductSpecifications(ProductSearchCriteria criteria) {
         this.criteria = criteria;
     }
 
+    //Contrato3
     @Override
     public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder builder)
     {

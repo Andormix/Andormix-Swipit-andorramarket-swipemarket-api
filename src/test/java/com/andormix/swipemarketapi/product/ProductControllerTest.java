@@ -251,4 +251,136 @@ class ProductControllerTest {
         JsonNode json = objectMapper.readTree(response);
         return json.get("token").asText();
     }
+
+    @Test
+    void shouldSearchProductsByTitle() throws Exception {
+        String token = registerAndGetToken(
+                "search@example.com",
+                "Search User"
+        );
+
+        CreateProductRequest lamp = new CreateProductRequest(
+                "Desk lamp",
+                "Lamp for studying",
+                new BigDecimal("25.00"),
+                ProductCategory.HOME,
+                ProductCondition.GOOD,
+                "Encamp"
+        );
+
+        CreateProductRequest chair = new CreateProductRequest(
+                "Office chair",
+                "Comfortable chair",
+                new BigDecimal("80.00"),
+                ProductCategory.FURNITURE,
+                ProductCondition.GOOD,
+                "Encamp"
+        );
+
+        createProduct(token, lamp);
+        createProduct(token, chair);
+
+        mockMvc.perform(get("/api/v1/products")
+                        .param("q", "lamp"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.length()", is(1)))
+                .andExpect(jsonPath("$.content[0].title", is("Desk lamp")));
+    }
+
+    @Test
+    void shouldFilterProductsByCategoryAndPrice() throws Exception {
+        String token = registerAndGetToken(
+                "filter@example.com",
+                "Filter User"
+        );
+
+        createProduct(token, new CreateProductRequest(
+                "Cheap electronics",
+                "Electronic device",
+                new BigDecimal("20.00"),
+                ProductCategory.ELECTRONICS,
+                ProductCondition.GOOD,
+                "Ordino"
+        ));
+
+        createProduct(token, new CreateProductRequest(
+                "Expensive electronics",
+                "Electronic device",
+                new BigDecimal("500.00"),
+                ProductCategory.ELECTRONICS,
+                ProductCondition.NEW,
+                "Ordino"
+        ));
+
+        createProduct(token, new CreateProductRequest(
+                "Book",
+                "Programming book",
+                new BigDecimal("20.00"),
+                ProductCategory.BOOKS,
+                ProductCondition.GOOD,
+                "Ordino"
+        ));
+
+        mockMvc.perform(get("/api/v1/products")
+                        .param("category", "ELECTRONICS")
+                        .param("minPrice", "10")
+                        .param("maxPrice", "50"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.length()", is(1)))
+                .andExpect(jsonPath("$.content[0].title", is("Cheap electronics")));
+    }
+
+    @Test
+    void shouldPaginateProducts() throws Exception {
+        String token = registerAndGetToken(
+                "pagination@example.com",
+                "Pagination User"
+        );
+
+        for (int i = 1; i <= 3; i++) {
+            createProduct(token, new CreateProductRequest(
+                    "Product " + i,
+                    "Product description " + i,
+                    new BigDecimal(i * 10L),
+                    ProductCategory.OTHER,
+                    ProductCondition.GOOD,
+                    "Canillo"
+            ));
+        }
+
+        mockMvc.perform(get("/api/v1/products")
+                        .param("page", "0")
+                        .param("size", "2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.length()", is(2)))
+                .andExpect(jsonPath("$.size", is(2)))
+                .andExpect(jsonPath("$.number", is(0)));
+    }
+
+
+    // ---------------------- HELPERS -----------------------------
+
+    private String createProduct(
+            String token,
+            CreateProductRequest request
+    ) throws Exception {
+        return mockMvc.perform(post("/api/v1/products")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+    }
+
+    @Test
+    void shouldRejectInvalidPriceRange() throws Exception {
+        mockMvc.perform(get("/api/v1/products")
+                        .param("minPrice", "100")
+                        .param("maxPrice", "20"))
+                .andExpect(status().isBadRequest());
+    }
+
+
 }
