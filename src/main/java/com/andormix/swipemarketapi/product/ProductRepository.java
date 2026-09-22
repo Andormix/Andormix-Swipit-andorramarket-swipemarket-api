@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 public interface ProductRepository extends JpaRepository<Product, Long>,  JpaSpecificationExecutor<Product> {
 
-    Page<Product> findByStatus(ProductStatus status, Pageable pageable);
+    // Legacy, no lo necesitamos mas.
+    //Page<Product> findByStatus(ProductStatus status, Pageable pageable);
 }
 

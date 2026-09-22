@@ -44,16 +44,17 @@ public class ProductService {
         return toResponse(productRepository.save(product));
     }
 
-    @Transactional(readOnly = true)
-    public Page<ProductResponse> findAll(
-            ProductStatus status,
-            Pageable pageable
-    ) {
-        Page<Product> products = status == null
-                ? productRepository.findAll(pageable)
-                : productRepository.findByStatus(status, pageable);
 
-        return products.map(this::toResponse);
+    @Transactional(readOnly = true)
+    public Page<ProductResponse> findAll(ProductSearchCriteria criteria, Pageable pageable)
+    {
+        validatePriceRange(criteria);
+
+        ProductSpecifications spec = new ProductSpecifications(criteria);
+
+        return productRepository
+                .findAll(spec, pageable)
+                .map(this::toResponse);
     }
 
     @Transactional(readOnly = true)
@@ -151,5 +152,17 @@ public class ProductService {
 
     private String normalize(String value) {
         return value.trim();
+    }
+
+    private void validatePriceRange(ProductSearchCriteria criteria) {
+        if (criteria.minPrice() != null
+                && criteria.maxPrice() != null
+                && criteria.minPrice().compareTo(criteria.maxPrice()) > 0) {
+
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Minimum price cannot be greater than maximum price"
+            );
+        }
     }
 }
