@@ -1,0 +1,688 @@
+{
+  "info": {
+    "_postman_id": "91d576ff-5f21-49f5-816a-d7c5c2a59f28",
+    "name": "Productos y CRUD del marketplace",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "45216650",
+    "_collection_link": "https://go.postman.co/collection/45216650-91d576ff-5f21-49f5-816a-d7c5c2a59f28?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Seller Register",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"seller@example.com\",\r\n  \"password\": \"password123\",\r\n  \"displayName\": \"Demo Seller\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/auth/register",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "auth",
+            "register"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Seller Register",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"seller@example.com\",\r\n  \"password\": \"password123\",\r\n  \"displayName\": \"Demo Seller\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/auth/register",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "x-content-type-options",
+              "value": "nosniff"
+            },
+            {
+              "key": "x-xss-protection",
+              "value": "0"
+            },
+            {
+              "key": "cache-control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "expires",
+              "value": "0"
+            },
+            {
+              "key": "x-frame-options",
+              "value": "DENY"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json"
+            },
+            {
+              "key": "transfer-encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "date",
+              "value": "Tue, 22 Sep 2026 14:15:09 GMT"
+            },
+            {
+              "key": "keep-alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"token\": \"eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJzZWxsZXJAZXhhbXBsZS5jb20iLCJpYXQiOjE3OTAwODY1MDksImV4cCI6MTc5MDA5MDEwOSwicm9sZXMiOlsiUk9MRV9VU0VSIl19.hC1x5frZZrdzqNTe2jyz3hQ6mLo6oPzRRf0CV6Dm7-eaejKw-QkmFwW4A6uY8Xs_\",\n  \"tokenType\": \"Bearer\",\n  \"userId\": 4,\n  \"email\": \"seller@example.com\",\n  \"displayName\": \"Demo Seller\",\n  \"role\": \"USER\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Seller Post Item",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_09fp}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"Lámpara de escritorio\",\r\n  \"description\": \"Lámpara en muy buen estado, ideal para estudiar.\",\r\n  \"price\": 25.50,\r\n  \"category\": \"HOME\",\r\n  \"condition\": \"GOOD\",\r\n  \"parish\": \"Escaldes-Engordany\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/products",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "products"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Seller Post Item",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"title\": \"Lámpara de escritorio\",\r\n  \"description\": \"Lámpara en muy buen estado, ideal para estudiar.\",\r\n  \"price\": 25.50,\r\n  \"category\": \"HOME\",\r\n  \"condition\": \"GOOD\",\r\n  \"parish\": \"Escaldes-Engordany\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/products",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "products"
+              ]
+            }
+          },
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "x-content-type-options",
+              "value": "nosniff"
+            },
+            {
+              "key": "x-xss-protection",
+              "value": "0"
+            },
+            {
+              "key": "cache-control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "expires",
+              "value": "0"
+            },
+            {
+              "key": "x-frame-options",
+              "value": "DENY"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json"
+            },
+            {
+              "key": "content-length",
+              "value": "343"
+            },
+            {
+              "key": "date",
+              "value": "Tue, 22 Sep 2026 14:16:32 GMT"
+            },
+            {
+              "key": "keep-alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"id\": 1,\n  \"sellerId\": 4,\n  \"sellerDisplayName\": \"Demo Seller\",\n  \"title\": \"Lámpara de escritorio\",\n  \"description\": \"Lámpara en muy buen estado, ideal para estudiar.\",\n  \"price\": 25.5,\n  \"category\": \"HOME\",\n  \"condition\": \"GOOD\",\n  \"parish\": \"Escaldes-Engordany\",\n  \"status\": \"ACTIVE\",\n  \"createdAt\": \"2026-09-22T14:16:32.784616300Z\",\n  \"updatedAt\": \"2026-09-22T14:16:32.784616300Z\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "See Items",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/products",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "products"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "See Items",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/products",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "products"
+              ]
+            }
+          },
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "x-content-type-options",
+              "value": "nosniff"
+            },
+            {
+              "key": "x-xss-protection",
+              "value": "0"
+            },
+            {
+              "key": "cache-control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "expires",
+              "value": "0"
+            },
+            {
+              "key": "x-frame-options",
+              "value": "DENY"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json"
+            },
+            {
+              "key": "content-length",
+              "value": "641"
+            },
+            {
+              "key": "date",
+              "value": "Tue, 22 Sep 2026 14:17:54 GMT"
+            },
+            {
+              "key": "keep-alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"content\": [\n    {\n      \"id\": 1,\n      \"sellerId\": 4,\n      \"sellerDisplayName\": \"Demo Seller\",\n      \"title\": \"Lámpara de escritorio\",\n      \"description\": \"Lámpara en muy buen estado, ideal para estudiar.\",\n      \"price\": 25.5,\n      \"category\": \"HOME\",\n      \"condition\": \"GOOD\",\n      \"parish\": \"Escaldes-Engordany\",\n      \"status\": \"ACTIVE\",\n      \"createdAt\": \"2026-09-22T14:16:33Z\",\n      \"updatedAt\": \"2026-09-22T14:16:33Z\"\n    }\n  ],\n  \"empty\": false,\n  \"first\": true,\n  \"last\": true,\n  \"number\": 0,\n  \"numberOfElements\": 1,\n  \"pageable\": {\n    \"offset\": 0,\n    \"pageNumber\": 0,\n    \"pageSize\": 20,\n    \"paged\": true,\n    \"sort\": {\n      \"empty\": false,\n      \"sorted\": true,\n      \"unsorted\": false\n    },\n    \"unpaged\": false\n  },\n  \"size\": 20,\n  \"sort\": {\n    \"empty\": false,\n    \"sorted\": true,\n    \"unsorted\": false\n  },\n  \"totalElements\": 1,\n  \"totalPages\": 1\n}"
+        }
+      ]
+    },
+    {
+      "name": "Filter Items",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/products?status=ACTIVE",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "products"
+          ],
+          "query": [
+            {
+              "key": "status",
+              "value": "ACTIVE"
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Filter Items",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/products?status=ACTIVE",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "ACTIVE"
+                }
+              ]
+            }
+          },
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "x-content-type-options",
+              "value": "nosniff"
+            },
+            {
+              "key": "x-xss-protection",
+              "value": "0"
+            },
+            {
+              "key": "cache-control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "expires",
+              "value": "0"
+            },
+            {
+              "key": "x-frame-options",
+              "value": "DENY"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json"
+            },
+            {
+              "key": "content-length",
+              "value": "641"
+            },
+            {
+              "key": "date",
+              "value": "Tue, 22 Sep 2026 14:19:15 GMT"
+            },
+            {
+              "key": "keep-alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"content\": [\n    {\n      \"id\": 1,\n      \"sellerId\": 4,\n      \"sellerDisplayName\": \"Demo Seller\",\n      \"title\": \"Lámpara de escritorio\",\n      \"description\": \"Lámpara en muy buen estado, ideal para estudiar.\",\n      \"price\": 25.5,\n      \"category\": \"HOME\",\n      \"condition\": \"GOOD\",\n      \"parish\": \"Escaldes-Engordany\",\n      \"status\": \"ACTIVE\",\n      \"createdAt\": \"2026-09-22T14:16:33Z\",\n      \"updatedAt\": \"2026-09-22T14:16:33Z\"\n    }\n  ],\n  \"empty\": false,\n  \"first\": true,\n  \"last\": true,\n  \"number\": 0,\n  \"numberOfElements\": 1,\n  \"pageable\": {\n    \"offset\": 0,\n    \"pageNumber\": 0,\n    \"pageSize\": 20,\n    \"paged\": true,\n    \"sort\": {\n      \"empty\": false,\n      \"sorted\": true,\n      \"unsorted\": false\n    },\n    \"unpaged\": false\n  },\n  \"size\": 20,\n  \"sort\": {\n    \"empty\": false,\n    \"sorted\": true,\n    \"unsorted\": false\n  },\n  \"totalElements\": 1,\n  \"totalPages\": 1\n}"
+        }
+      ]
+    },
+    {
+      "name": "Actualizar producto",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJzZWxsZXJAZXhhbXBsZS5jb20iLCJpYXQiOjE3OTAwODY1MDksImV4cCI6MTc5MDA5MDEwOSwicm9sZXMiOlsiUk9MRV9VU0VSIl19.hC1x5frZZrdzqNTe2jyz3hQ6mLo6oPzRRf0CV6Dm7-eaejKw-QkmFwW4A6uY8Xs_",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"Lámpara de escritorio actualizada\",\r\n  \"description\": \"Descripción actualizada.\",\r\n  \"price\": 20.00,\r\n  \"category\": \"HOME\",\r\n  \"condition\": \"GOOD\",\r\n  \"parish\": \"Andorra la Vella\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/products/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "products",
+            "1"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Actualizar producto",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"title\": \"Lámpara de escritorio actualizada\",\r\n  \"description\": \"Descripción actualizada.\",\r\n  \"price\": 20.00,\r\n  \"category\": \"HOME\",\r\n  \"condition\": \"GOOD\",\r\n  \"parish\": \"Andorra la Vella\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/products/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "products",
+                "1"
+              ]
+            }
+          },
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "x-content-type-options",
+              "value": "nosniff"
+            },
+            {
+              "key": "x-xss-protection",
+              "value": "0"
+            },
+            {
+              "key": "cache-control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "expires",
+              "value": "0"
+            },
+            {
+              "key": "x-frame-options",
+              "value": "DENY"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json"
+            },
+            {
+              "key": "content-length",
+              "value": "319"
+            },
+            {
+              "key": "date",
+              "value": "Tue, 22 Sep 2026 14:23:24 GMT"
+            },
+            {
+              "key": "keep-alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"id\": 1,\n  \"sellerId\": 4,\n  \"sellerDisplayName\": \"Demo Seller\",\n  \"title\": \"Lámpara de escritorio actualizada\",\n  \"description\": \"Descripción actualizada.\",\n  \"price\": 20,\n  \"category\": \"HOME\",\n  \"condition\": \"GOOD\",\n  \"parish\": \"Andorra la Vella\",\n  \"status\": \"ACTIVE\",\n  \"createdAt\": \"2026-09-22T14:16:33Z\",\n  \"updatedAt\": \"2026-09-22T14:23:24.683944500Z\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Marcar como vendido",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJzZWxsZXJAZXhhbXBsZS5jb20iLCJpYXQiOjE3OTAwODY1MDksImV4cCI6MTc5MDA5MDEwOSwicm9sZXMiOlsiUk9MRV9VU0VSIl19.hC1x5frZZrdzqNTe2jyz3hQ6mLo6oPzRRf0CV6Dm7-eaejKw-QkmFwW4A6uY8Xs_",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"status\": \"SOLD\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/products/1/status",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "products",
+            "1",
+            "status"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Marcar como vendido",
+          "originalRequest": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"status\": \"SOLD\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/products/1/status",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "products",
+                "1",
+                "status"
+              ]
+            }
+          },
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "x-content-type-options",
+              "value": "nosniff"
+            },
+            {
+              "key": "x-xss-protection",
+              "value": "0"
+            },
+            {
+              "key": "cache-control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "expires",
+              "value": "0"
+            },
+            {
+              "key": "x-frame-options",
+              "value": "DENY"
+            },
+            {
+              "key": "content-type",
+              "value": "application/json"
+            },
+            {
+              "key": "content-length",
+              "value": "317"
+            },
+            {
+              "key": "date",
+              "value": "Tue, 22 Sep 2026 14:25:42 GMT"
+            },
+            {
+              "key": "keep-alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"id\": 1,\n  \"sellerId\": 4,\n  \"sellerDisplayName\": \"Demo Seller\",\n  \"title\": \"Lámpara de escritorio actualizada\",\n  \"description\": \"Descripción actualizada.\",\n  \"price\": 20,\n  \"category\": \"HOME\",\n  \"condition\": \"GOOD\",\n  \"parish\": \"Andorra la Vella\",\n  \"status\": \"SOLD\",\n  \"createdAt\": \"2026-09-22T14:16:33Z\",\n  \"updatedAt\": \"2026-09-22T14:25:42.368018200Z\"\n}"
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "json_web_token_09fp",
+      "secret": true
+    }
+  ]
+}
