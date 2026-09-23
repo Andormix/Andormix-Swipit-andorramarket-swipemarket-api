@@ -34,11 +34,7 @@ public class InteractionService {
         this.favoriteRepository = favoriteRepository;
     }
 
-    public SwipeResponse swipe(
-            Long productId,
-            SwipeRequest request,
-            AppUserPrincipal principal
-    ) {
+    public SwipeResponse swipe(Long productId, SwipeRequest request, AppUserPrincipal principal) {
         User user = getUser(principal);
         Product product = getProduct(productId);
 
@@ -64,9 +60,7 @@ public class InteractionService {
     }
 
     @Transactional(readOnly = true)
-    public List<ProductResponse> findInterestedProducts(
-            AppUserPrincipal principal
-    ) {
+    public List<ProductResponse> findInterestedProducts(AppUserPrincipal principal) {
         User user = getUser(principal);
 
         return swipeRepository
@@ -78,10 +72,7 @@ public class InteractionService {
                 .toList();
     }
 
-    public void addFavorite(
-            Long productId,
-            AppUserPrincipal principal
-    ) {
+    public void addFavorite(Long productId, AppUserPrincipal principal) {
         User user = getUser(principal);
         Product product = getProduct(productId);
 
@@ -99,10 +90,7 @@ public class InteractionService {
         }
     }
 
-    public void removeFavorite(
-            Long productId,
-            AppUserPrincipal principal
-    ) {
+    public void removeFavorite(Long productId, AppUserPrincipal principal) {
         User user = getUser(principal);
         Product product = getProduct(productId);
 
@@ -115,9 +103,10 @@ public class InteractionService {
         User user = getUser(principal);
 
         return favoriteRepository.findByUser(user)
-                .stream()// el for
-                // Por cada 'favorite' de la lista, extrae su producto y conviértelo a DTO
-                .map(favorite -> toProductResponse(favorite.getProduct()))
+                .stream()
+                .map(favorite -> toProductResponse(
+                        favorite.getProduct()
+                ))
                 .toList();
     }
 
@@ -143,7 +132,7 @@ public class InteractionService {
                 ));
     }
 
-    private Product getUserProduct(Long productId) {
+    private Product getProduct(Long productId) {
         return productRepository.findById(productId)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
@@ -151,9 +140,6 @@ public class InteractionService {
                 ));
     }
 
-    private Product getProduct(Long productId) {
-        return getUserProduct(productId);
-    }
 
     private void validateNotOwnProduct(User user, Product product) {
         if (product.getSeller().getId().equals(user.getId())) {
