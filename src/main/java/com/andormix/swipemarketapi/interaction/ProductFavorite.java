@@ -39,4 +39,8 @@ public class ProductFavorite {
         this.product = product;
         this.createdAt = Instant.now();
     }
+
+    public Product getProduct() {
+        return product;
+    }
 }
