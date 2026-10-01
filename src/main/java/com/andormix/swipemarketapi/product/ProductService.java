@@ -111,8 +111,27 @@ public class ProductService {
         Product product = getProduct(productId);
         checkOwnership(product, principal);
 
-        product.changeStatus(request.status());
+        // Same status
+        if (product.getStatus() == request.status())
+        {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Not allowed"
+            );
+        }
 
+        if(product.getStatus() == ProductStatus.SOLD )
+        {
+            if(request.status() == ProductStatus.ACTIVE ||  request.status() == ProductStatus.RESERVED)
+            {
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "Not allowed"
+                );
+            }
+        }
+
+        product.changeStatus(request.status());
         return toResponse(productRepository.save(product));
     }
 

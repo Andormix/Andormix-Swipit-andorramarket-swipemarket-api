@@ -2,6 +2,7 @@ package com.andormix.swipemarketapi.product;
 
 import com.andormix.swipemarketapi.auth.LoginRequest;
 import com.andormix.swipemarketapi.auth.RegisterRequest;
+import com.andormix.swipemarketapi.user.User;
 import com.andormix.swipemarketapi.user.UserRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,6 +23,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -190,9 +192,9 @@ class ProductControllerTest {
                 new ChangeProductStatusRequest(ProductStatus.SOLD);
 
         mockMvc.perform(patch("/api/v1/products/" + productId + "/status")
-                        .header("Authorization", "Bearer " + token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(statusRequest)))
+                .header("Authorization", "Bearer " + token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(statusRequest)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status", is("SOLD")));
     }
@@ -382,5 +384,107 @@ class ProductControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    //----------------------- PRACTICE ----------------------------
 
+    @Test
+    void shouldChangeStatusFromActiveToReserved()throws Exception {
+        String token = registerAndGetToken(
+                "changeStatus@test.com",
+                "Change Status User"
+        );
+
+        CreateProductRequest createProductRequest = new CreateProductRequest(
+                "Gaming PC",
+                "Nice state",
+                new BigDecimal("2000.00"),
+                ProductCategory.ELECTRONICS,
+                ProductCondition.GOOD,
+                "Canillo"
+        );
+
+        String productResponse = createProduct(token, createProductRequest);
+
+         mockMvc.perform(get("/api/v1/products/1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status")
+                .value(ProductStatus.ACTIVE.name()));
+
+        Long productId = objectMapper.readTree(productResponse).get("id").asLong();
+
+        ChangeProductStatusRequest changeProductStatusRequest = new ChangeProductStatusRequest(ProductStatus.RESERVED);
+
+        mockMvc.perform(patch("/api/v1/products/" + productId + "/status")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(changeProductStatusRequest)))
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.status", is(ProductStatus.RESERVED.name())));
+
+        mockMvc.perform(get("/api/v1/products/1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status")
+                .value(ProductStatus.RESERVED.name()));
+    }
+
+    @Test
+    void shouldNotChangeStatusFromSoldToReserved()throws Exception {
+        String token = registerAndGetToken(
+                "changeStatus@test.com",
+                "Change Status User"
+        );
+
+        CreateProductRequest createProductRequest = new CreateProductRequest(
+                "Gaming PC",
+                "Nice state",
+                new BigDecimal("2000.00"),
+                ProductCategory.ELECTRONICS,
+                ProductCondition.GOOD,
+                "Canillo"
+        );
+
+        // Crete ACTIVE PRODUCT
+        String productResponse = createProduct(token, createProductRequest);
+        mockMvc.perform(get("/api/v1/products/1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status")
+                .value(ProductStatus.ACTIVE.name()));
+
+        Long productId = objectMapper.readTree(productResponse).get("id").asLong();
+
+        // CHANGE TO RESERVED
+        ChangeProductStatusRequest changeProductStatusRequest = new ChangeProductStatusRequest(ProductStatus.RESERVED);
+        mockMvc.perform(patch("/api/v1/products/" + productId + "/status")
+                .header("Authorization", "Bearer " + token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(changeProductStatusRequest)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status", is(ProductStatus.RESERVED.name())));
+
+        // CHANGE TO SOLD
+        changeProductStatusRequest = new ChangeProductStatusRequest(ProductStatus.SOLD);
+        mockMvc.perform(patch("/api/v1/products/" + productId + "/status")
+                .header("Authorization", "Bearer " + token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(changeProductStatusRequest)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status", is(ProductStatus.SOLD.name())));
+
+        // TRY BACK TO RESERVED
+        changeProductStatusRequest = new ChangeProductStatusRequest(ProductStatus.RESERVED);
+        mockMvc.perform(patch("/api/v1/products/" + productId + "/status")
+                .header("Authorization", "Bearer " + token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(changeProductStatusRequest)))
+                .andExpect(status().isBadRequest());
+
+        // CHECK STATUS IS UNCHANGED
+        mockMvc.perform(get("/api/v1/products/" + productId))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status")
+                .value(ProductStatus.SOLD.name()));
+    }
 }

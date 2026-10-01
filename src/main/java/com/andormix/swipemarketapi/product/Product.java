@@ -89,7 +89,8 @@ public class Product {
         this.updatedAt = Instant.now();
     }
 
-    public void changeStatus(ProductStatus status) {
+    public void changeStatus(ProductStatus status)
+    {
         this.status = status;
         this.updatedAt = Instant.now();
     }
