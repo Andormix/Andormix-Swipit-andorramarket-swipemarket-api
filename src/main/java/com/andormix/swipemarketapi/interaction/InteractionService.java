@@ -1,15 +1,20 @@
 package com.andormix.swipemarketapi.interaction;
 
 import com.andormix.swipemarketapi.product.Product;
+import com.andormix.swipemarketapi.product.ProductCategory;
 import com.andormix.swipemarketapi.product.ProductRepository;
 import com.andormix.swipemarketapi.product.ProductResponse;
 import com.andormix.swipemarketapi.security.AppUserPrincipal;
 import com.andormix.swipemarketapi.user.User;
 import com.andormix.swipemarketapi.user.UserRepository;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+
+// Testing generics DDD
+import static com.andormix.swipemarketapi.common.util.GenericSpecifications.*;
 
 import java.util.List;
 
@@ -107,6 +112,24 @@ public class InteractionService {
                 .map(favorite -> toProductResponse(
                         favorite.getProduct()
                 ))
+                .toList();
+    }
+
+    // Met sobrecarregat para probar DDD Genitc template.
+    @Transactional(readOnly = true)
+    public List<ProductResponse> findFavorites(ProductCategory category, String search, AppUserPrincipal principal
+    ) {
+        User user = getUser(principal);
+
+        // Creamos la Specification navegando por la relación de ProductFavorite
+        Specification<ProductFavorite> spec = Specification
+                .<ProductFavorite>where(isEqualTo("user", user))
+                .and(joinIsEqualTo("product", "category", category))
+                .and(containsTextInFields(search, "product.title", "product.description"));
+
+        return favoriteRepository.findAll(spec)
+                .stream()
+                .map(favorite -> toProductResponse(favorite.getProduct()))
                 .toList();
     }
 

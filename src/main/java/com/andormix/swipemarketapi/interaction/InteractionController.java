@@ -62,6 +62,6 @@ public class InteractionController {
             @RequestParam(required = false) String search,
             @AuthenticationPrincipal AppUserPrincipal principal
     ) {
-        return interactionService.findFavorites(principal);
+        return interactionService.findFavorites(category, search, principal);
     }
 }

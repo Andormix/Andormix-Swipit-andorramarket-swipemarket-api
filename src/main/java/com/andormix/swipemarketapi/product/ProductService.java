@@ -5,10 +5,14 @@ import com.andormix.swipemarketapi.user.User;
 import com.andormix.swipemarketapi.user.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+
+//Testing Generic template
+import static com.andormix.swipemarketapi.common.util.GenericSpecifications.*;
 
 @Service
 @Transactional
@@ -45,7 +49,7 @@ public class ProductService {
     }
 
 
-    @Transactional(readOnly = true)
+    /*@Transactional(readOnly = true)
     public Page<ProductResponse> findAll(ProductSearchCriteria criteria, Pageable pageable)
     {
         validatePriceRange(criteria);
@@ -54,6 +58,23 @@ public class ProductService {
 
         return productRepository
                 .findAll(spec, pageable)
+                .map(this::toResponse);
+    }*/
+
+    // Testing GenericSpecifications
+    @Transactional(readOnly = true)
+    public Page<ProductResponse> findAll(ProductSearchCriteria criteria, Pageable pageable) {
+        validatePriceRange(criteria);
+
+        Specification<Product> spec = Specification
+                .<Product>where(containsText("title", criteria.query()))
+                .and(isEqualTo("category", criteria.category()))
+                .and(isEqualTo("condition", criteria.condition()))
+                .and(isEqualTo("status", criteria.status()))
+                .and(greaterThanOrEqualTo("price", criteria.minPrice()))
+                .and(lessThanOrEqualTo("price", criteria.maxPrice()));
+
+        return productRepository.findAll(spec, pageable)
                 .map(this::toResponse);
     }
 

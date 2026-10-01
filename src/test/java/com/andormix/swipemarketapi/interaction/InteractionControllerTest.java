@@ -18,6 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -419,4 +420,92 @@ class InteractionControllerTest {
 
         return json.get("id").asLong();
     }
+
+    @Test
+    void shouldFilterFavoritesByCategoryAndSearchUsingGenericSpecTemplate() throws Exception {
+        String sellerToken = registerAndGetToken(
+                "seller-filter-fav@example.com",
+                "Seller Filter Fav"
+        );
+
+        String buyerToken = registerAndGetToken(
+                "buyer-filter-fav@example.com",
+                "Buyer Filter Fav"
+        );
+
+        // 1. Crear dos productos de distintas categorías
+        Long electronicId = createProductWithCategoryAndTitle(
+                sellerToken,
+                "iPhone 13 Pro",
+                ProductCategory.ELECTRONICS
+        );
+
+        Long homeId = createProductWithCategoryAndTitle(
+                sellerToken,
+                "Desk Lamp Vintage",
+                ProductCategory.HOME
+        );
+
+        // 2. Marcar ambos como favoritos
+        mockMvc.perform(post("/api/v1/products/" + electronicId + "/favorite")
+                        .header("Authorization", "Bearer " + buyerToken))
+                .andExpect(status().isNoContent());
+
+        mockMvc.perform(post("/api/v1/products/" + homeId + "/favorite")
+                        .header("Authorization", "Bearer " + buyerToken))
+                .andExpect(status().isNoContent());
+
+        // 3. Caso A: Sin filtros -> Debe devolver 2 favoritos
+        mockMvc.perform(get("/api/v1/favorites")
+                        .header("Authorization", "Bearer " + buyerToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", is(2)));
+
+        // 4. Caso B: Filtrar por Categoría ELECTRONICS -> Debe devolver solo el iPhone (1)
+        mockMvc.perform(get("/api/v1/favorites?category=ELECTRONICS")
+                        .header("Authorization", "Bearer " + buyerToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", is(1)))
+                .andExpect(jsonPath("$[0].id", is(electronicId.intValue())))
+                .andExpect(jsonPath("$[0].title", is("iPhone 13 Pro")));
+
+        // 5. Caso C: Filtrar por búsqueda de texto "lamp" -> Debe devolver solo la lámpara (1)
+        mockMvc.perform(get("/api/v1/favorites?search=lamp")
+                        .header("Authorization", "Bearer " + buyerToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", is(1)))
+                .andExpect(jsonPath("$[0].id", is(homeId.intValue())))
+                .andExpect(jsonPath("$[0].title", is("Desk Lamp Vintage")));
+    }
+
+
+    //HELPERS
+
+    private Long createProductWithCategoryAndTitle(
+            String sellerToken,
+            String title,
+            ProductCategory category
+    ) throws Exception {
+        CreateProductRequest request = new CreateProductRequest(
+                title,
+                "Description for " + title,
+                new BigDecimal("50.00"),
+                category,
+                ProductCondition.GOOD,
+                "Andorra la Vella"
+        );
+
+        String response = mockMvc.perform(post("/api/v1/products")
+                        .header("Authorization", "Bearer " + sellerToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        JsonNode json = objectMapper.readTree(response);
+        return json.get("id").asLong();
+    }
+
 }

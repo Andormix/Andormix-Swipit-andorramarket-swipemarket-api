@@ -11,8 +11,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+//Testing generic DDD
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface ProductFavoriteRepository extends JpaRepository<ProductFavorite, Long> {
+
+public interface ProductFavoriteRepository extends JpaRepository<ProductFavorite, Long>,JpaSpecificationExecutor<ProductFavorite> {
 
     boolean existsByUserAndProduct(User user, Product product);
     void deleteByUserAndProduct(User user, Product product);

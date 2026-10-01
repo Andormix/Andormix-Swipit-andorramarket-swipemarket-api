@@ -72,4 +72,46 @@ public class GenericSpecifications {
             return builder.equal(root.get(joinField).get(fieldName), value);
         };
     }
+    /**
+     * Useful for queries like "Find products where category is IN [ELECTRONICS, CLOTHING]" or "Find orders with
+     * status IN [PENDING, SHIPPED]".
+     * */
+    public static <T, V> Specification<T> isIn(String fieldName, Collection<V> values) {
+        return (root, query, builder) -> {
+            if (values == null || values.isEmpty()) {
+                return builder.conjunction();
+            }
+            return root.get(fieldName).in(values);
+        };
+    }
+
+    /**
+     * Useful when a single search box needs to check both title and description
+     * */
+    public static <T> Specification<T> containsTextInFields(String value, String... fieldNames) {
+        return (root, query, builder) -> {
+            if (value == null || value.isBlank()) {
+                return builder.conjunction();
+            }
+            String pattern = "%" + value.trim().toLowerCase() + "%";
+
+            jakarta.persistence.criteria.Predicate[] predicates = java.util.Arrays.stream(fieldNames)
+                    .map(field -> {
+                        jakarta.persistence.criteria.Path<String> path;
+                        if (field.contains(".")) {
+                            String[] parts = field.split("\\.");
+                            path = root.get(parts[0]);
+                            for (int i = 1; i < parts.length; i++) {
+                                path = path.get(parts[i]);
+                            }
+                        } else {
+                            path = root.get(field);
+                        }
+                        return builder.like(builder.lower(path), pattern);
+                    })
+                    .toArray(jakarta.persistence.criteria.Predicate[]::new);
+
+            return builder.or(predicates);
+        };
+    }
 }
