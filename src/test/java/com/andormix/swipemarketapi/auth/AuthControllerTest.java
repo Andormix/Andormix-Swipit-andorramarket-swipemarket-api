@@ -1,5 +1,6 @@
 package com.andormix.swipemarketapi.auth;
 
+import com.andormix.swipemarketapi.product.ProductRepository;
 import com.andormix.swipemarketapi.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,9 +33,19 @@ class AuthControllerTest {
     @Autowired
     private UserRepository userRepository;
 
-    @BeforeEach
+    @Autowired
+    private ProductRepository productRepository;
+
+    /*@BeforeEach
     void cleanDatabase() {
         userRepository.deleteAll();
+    }*/
+
+    @BeforeEach
+    void cleanDatabase() {
+        // 2. Delete child entities FIRST to satisfy FK constraints, then parents
+        productRepository.deleteAllInBatch();
+        userRepository.deleteAllInBatch();
     }
 
     @Test
