@@ -371,29 +371,6 @@ class InteractionControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    private String registerAndGetToken(
-            String email,
-            String displayName
-    ) throws Exception {
-        RegisterRequest request = new RegisterRequest(
-                email,
-                "password123",
-                displayName
-        );
-
-        String response = mockMvc.perform(post("/api/v1/auth/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-
-        JsonNode json = objectMapper.readTree(response);
-
-        return json.get("token").asText();
-    }
-
     private Long createProductAndGetId(
             String sellerToken,
             String title
@@ -506,6 +483,29 @@ class InteractionControllerTest {
 
         JsonNode json = objectMapper.readTree(response);
         return json.get("id").asLong();
+    }
+
+    private String registerAndGetToken(
+            String email,
+            String displayName
+    ) throws Exception {
+        RegisterRequest request = new RegisterRequest(
+                email,
+                "password123",
+                displayName
+        );
+
+        String response = mockMvc.perform(post("/api/v1/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        JsonNode json = objectMapper.readTree(response);
+
+        return json.get("token").asText();
     }
 
 }
