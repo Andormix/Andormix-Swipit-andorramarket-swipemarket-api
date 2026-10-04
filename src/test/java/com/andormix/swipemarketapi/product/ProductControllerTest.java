@@ -366,6 +366,67 @@ class ProductControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    // Coverage test from manual report 10/04/26 By Eric
+    @Test
+    void shouldFilterAndReturnProductsOrderByAsc() throws Exception
+    {
+
+        String token = registerAndGetToken(
+                "filter@example.com",
+                "Filter User"
+        );
+
+        createProduct(token, new CreateProductRequest(
+                "Cheap electronics",
+                "Electronic device",
+                new BigDecimal("20.00"),
+                ProductCategory.ELECTRONICS,
+                ProductCondition.GOOD,
+                "Ordino"
+        ));
+
+        createProduct(token, new CreateProductRequest(
+                "Expensive electronics",
+                "Electronic device",
+                new BigDecimal("500.00"),
+                ProductCategory.ELECTRONICS,
+                ProductCondition.NEW,
+                "Ordino"
+        ));
+
+        createProduct(token, new CreateProductRequest(
+                "Book",
+                "Programming book",
+                new BigDecimal("20.00"),
+                ProductCategory.BOOKS,
+                ProductCondition.GOOD,
+                "Ordino"
+        ));
+
+
+        mockMvc.perform(get("/api/v1/products")
+                        .param("sortDirection", "asc")
+                        .param("sortBy", "price"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].price").value(20.00))
+                .andExpect(jsonPath("$.content[2].price").value(500.00));
+
+    }
+
+    @Test
+    void findAll_shouldThrowBadRequest_whenSortDirectionIsInvalid() throws Exception {
+        mockMvc.perform(get("/api/v1/products")
+                        .param("sortDirection", "invalid_dir"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void findAll_shouldThrowBadRequest_whenSortByPropertyIsInvalid() throws Exception {
+        mockMvc.perform(get("/api/v1/products")
+                        .param("sortBy", "unsupportedProperty"))
+                .andExpect(status().isBadRequest());
+    }
+
     //----------------------- EXTRA PRACTICE: ENFORCING RULES ----------------------------
 
     @Test
