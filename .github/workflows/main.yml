@@ -22,7 +22,7 @@ jobs:
         run: chmod +x mvnw
 
       - name: Compilar, ejecutar Tests y generar reporte JaCoCo
-        run: ./mvnw clean test
+        run: ./mvnw clean verify
 
       - name: Subir informe HTML de JaCoCo
         uses: actions/upload-artifact@v4
