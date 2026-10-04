@@ -2,10 +2,20 @@ name: CI Build, Test & JaCoCo Coverage
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
 
 jobs:
   build:
+    name: Build, tests and coverage
     runs-on: ubuntu-latest
 
     steps:
@@ -13,21 +23,46 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configurar Java JDK 21
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
-          distribution: 'temurin'
-          java-version: '21'
+          distribution: temurin
+          java-version: "21"
+          cache: maven
 
       - name: Dar permisos de ejecución a Maven Wrapper
         run: chmod +x mvnw
 
-      - name: Compilar, ejecutar Tests y generar reporte JaCoCo
-        run: ./mvnw clean verify
+      - name: Compilar, ejecutar tests y generar JaCoCo
+        run: ./mvnw --batch-mode clean verify
 
-      - name: Subir informe HTML de JaCoCo
+      - name: Subir informe JaCoCo como artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: jacoco-coverage-report
           path: target/site/jacoco/
-    
+          if-no-files-found: warn
 
+  deploy:
+    name: Deploy JaCoCo report to GitHub Pages
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Publicar informe JaCoCo en Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: target/site/jacoco/
+
+      - name: Desplegar GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
