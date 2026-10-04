@@ -35,13 +35,13 @@ jobs:
       - name: Compilar, ejecutar tests y generar JaCoCo
         run: ./mvnw --batch-mode clean verify
 
-      - name: Subir informe JaCoCo como artifact
+      - name: Subir informe JaCoCo
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: jacoco-coverage-report
           path: target/site/jacoco/
-          if-no-files-found: warn
+          if-no-files-found: error
 
   deploy:
     name: Deploy JaCoCo report to GitHub Pages
@@ -58,10 +58,16 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: Publicar informe JaCoCo en Pages
+      - name: Descargar informe JaCoCo
+        uses: actions/download-artifact@v4
+        with:
+          name: jacoco-coverage-report
+          path: pages
+
+      - name: Preparar artifact de GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
-          path: target/site/jacoco/
+          path: pages
 
       - name: Desplegar GitHub Pages
         id: deployment
