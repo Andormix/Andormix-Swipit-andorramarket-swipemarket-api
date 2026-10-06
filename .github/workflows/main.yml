@@ -1,6 +1,6 @@
 name: CI Build, Test & JaCoCo Coverage
 
-run-name: "Ejecución CI/CD en main"
+run-name: "CI/CD | ${{ github.ref_name }} | ${{ github.event.head_commit.message }}"
 
 on:
   push:
