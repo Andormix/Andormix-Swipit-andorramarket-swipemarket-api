@@ -1,5 +1,7 @@
 name: CI Build, Test & JaCoCo Coverage
 
+run-name: "Ejecución CI/CD en main"
+
 on:
   push:
     branches: ["main"]
