@@ -47,7 +47,6 @@ public class ProductOffer {
         this.offeredPrice = offeredPrice;
         this.createdAt = Instant.now();
     }
-
     public Long getId() {
         return id;
     }
